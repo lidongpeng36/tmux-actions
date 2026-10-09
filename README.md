@@ -36,7 +36,8 @@ includes less, and typical Linux installations provide it. No Rust compiler or
 | Sidebar | `q` | Quit pager, close sidebar and restore layout |
 
 Existing copy-pipe/yank bindings remain configurable in tmux. Search results can
-be copied without beginning a separate selection. Older copycat cancellation
+be copied without beginning a separate selection. URL presets stop at Chinese
+prose punctuation and pane border characters while retaining Unicode paths. Older copycat cancellation
 wrappers are cleaned up when detected; user copy bindings are kept.
 
 Opening uses argument vectors, not shell evaluation of selected text. Editors

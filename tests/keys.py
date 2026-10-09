@@ -3,7 +3,7 @@ import contextlib,fcntl,json,os,pathlib,pty,select,struct,subprocess,tempfile,te
 from actions import BIN,ROOT,wait
 with tempfile.TemporaryDirectory(prefix='tmux-actions-keys-') as temp:
  d=pathlib.Path(temp);socket=str(d/'socket');producer=d/'producer.py';url='https://example.com/path?x=1#fragment'
- producer.write_text('import time\nprint('+repr(url)+',flush=True)\ntime.sleep(120)\n')
+ producer.write_text('import time\nprint('+repr(url+'，中文说明。')+',flush=True)\ntime.sleep(120)\n')
  def t(*a):return subprocess.check_output(['tmux','-S',socket,*a],text=True,stderr=subprocess.STDOUT,timeout=8).rstrip('\n')
  t('-f','/dev/null','new-session','-d','python3',str(producer));t('set','-g','prefix','C-z');t('set','-g','mode-keys','vi');t('set','-g','set-clipboard','off');t('set','-g','@tmux-actions-bin',str(BIN));t('set','-g','@tmux-actions-width-cache',str(d/'widths.json'))
  master,slave=pty.openpty();fcntl.ioctl(slave,termios.TIOCSWINSZ,struct.pack('HHHH',24,180,0,0))
@@ -15,7 +15,7 @@ with tempfile.TemporaryDirectory(prefix='tmux-actions-keys-') as temp:
   wait(lambda:url in t('capture-pane','-p'))
   os.write(master,b'\x1a\x15');wait(lambda:t('display','-p','#{search_match}')==url)
   os.write(master,b'\r');wait(lambda:t('display','-p','#{pane_in_mode}')=='0');assert t('show-buffer')==url
-  os.write(master,b'\x1a/');time.sleep(.15);os.write(master,b'https?://[^[:space:]]+\r');wait(lambda:t('display','-p','#{search_match}')==url)
+  os.write(master,b'\x1a/');time.sleep(.15);os.write(master,'https?://[^[:space:]，。]+\r'.encode());wait(lambda:t('display','-p','#{search_match}')==url)
   os.write(master,b'\r');wait(lambda:t('display','-p','#{pane_in_mode}')=='0')
   os.write(master,b'\x1a\x7f')
   wait(lambda:bool(t('show-option','-wqv','@tmux-actions-sidebar')))

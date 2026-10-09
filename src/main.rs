@@ -116,7 +116,7 @@ fn configure(a: &Args) -> Result<()> {
     for (key, pattern) in [
         (
             "C-u",
-            r"(https?://|git@|git://|ssh://|ftp://|file:///)[^[:space:]]+",
+            r"(https?://|git@|git://|ssh://|ftp://|file:///)[^[:space:]，。！？；：、（）【】《》〈〉「」『』〔〕［］｛｝“”‘’│┃║]+",
         ),
         ("C-d", r"[[:digit:]]+"),
         ("M-i", r"[[:digit:]]{1,3}(\.[[:digit:]]{1,3}){3}"),
